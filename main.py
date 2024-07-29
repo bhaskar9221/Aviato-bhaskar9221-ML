@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Path
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from google.cloud import firestore
 import os
 from typing import Dict, Any
@@ -10,7 +10,6 @@ from email.utils import formataddr
 from dotenv import load_dotenv
 
 from email_validator import validate_email, EmailNotValidError
-from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
@@ -30,46 +29,125 @@ class User(BaseModel):
     class Config:
         extra = 'allow'
 
+
+
+
+
 app = FastAPI()
 
 
 
 
 
-# Email configuration from environment variables
-SMTP_SERVER = os.getenv('SMTP_SERVER')
-SMTP_PORT = int(os.getenv('SMTP_PORT'))
-SMTP_USER = os.getenv('SMTP_USER')
-SMTP_PASSWORD = os.getenv('SMTP_PASSWORD')
 
-class EmailRequest(BaseModel):
-    subject: str
+def send_email(to_email: str, subject: str, message: str):
+    
+    
+    
+    # Replace these with your email server details
+    smtp_server = os.getenv('SMTP_SERVER')
+    smtp_port = int(os.getenv('SMTP_PORT', 587))
+    smtp_username = os.getenv('SMTP_USER')
+    smtp_password = os.getenv('SMTP_PASSWORD')
+
+    msg = MIMEMultipart("alternative")
+    msg['From'] = smtp_username
+    msg['To'] = to_email
+    msg['Subject'] = subject
+
+    # HTML content with placeholders for dynamic data
+    html_content = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <style>
+            .container {{
+                width: 100%;
+                background-color: #f9f9f9;
+                padding: 20px;
+                font-family: Arial, sans-serif;
+            }}
+            .header {{
+                background-color: #007bff;
+                color: white;
+                padding: 10px;
+                text-align: center;
+                font-size: 24px;
+                font-weight: bold;
+            }}
+            .content {{
+                padding: 20px;
+                background-color: white;
+                margin: 20px auto;
+                width: 80%;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }}
+            .button {{
+                background-color: #007bff;
+                color: white;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                margin: 20px 0;
+                border-radius: 5px;
+            }}
+            .footer {{
+                background-color: #007bff;
+                color: white;
+                padding: 10px;
+                text-align: center;
+                font-size: 14px;
+            }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">API Documentation Invitation</div>
+            <div class="content">
+                <p>Hello,</p>
+                <p>I am are excited to invite you to view my User Management API documentation on <b>ReDoc</b>.</p>
+                <p>You can access the documentation by clicking the button below:</p>
+                <a href="YOUR_REDOC_LINK" class="button">View API Documentation</a>
+                <p>{message}</p>
+                <p>I have also set up an GCP Free Tier Accound, and used it for deployment, and GCP FirseStore for the database.</p>
+                <p>I appreciate your time and look forward to your feedback.</p>
+            </div>
+            <div class="footer">
+                <p>Thank you,<br>Bhaskar Mondal -bhaskar9221@ML</p>
+                <p>If you have any questions, feel free to reply to this email.</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+
+    msg.attach(MIMEText(html_content, "html"))
+
+    try:
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()
+        server.login(smtp_username, smtp_password)
+        server.sendmail(smtp_username, to_email, msg.as_string())
+        server.quit()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.post("/send_invitation")
-async def send_invitation(email_request: EmailRequest):
+async def send_email_endpoint():
+    subject = "API Documentation Invitation by Bhaskar Mondal"
+    message = "Hello Ma'am, I am Bhaskar. Here are the API invitation emails, requested as per the task."
+    #email_list = ["shraddha@aviato.consulting","pooja@aviato.consulting","prijesh@aviato.consulting","hiring@aviato.consulting"]
+    friend = ["abhijeetjoy14@gmail.com","bhaskarmondal.vef@gmail.com"]
     try:
-        recipients = [
-            "bhaskarmondal7221@gmail.com",
+        for email in friend:
+            send_email(email, subject, message)
             
-        ]
-        
-        with open("email_template.html", "r") as file:
-            email_body = file.read()
-
-        msg = MIMEMultipart()
-        msg['From'] = formataddr(('Your Name', SMTP_USER))
-        msg['To'] = ', '.join(recipients)
-        msg['Subject'] = email_request.subject
-        msg.attach(MIMEText(email_body, 'html'))
-
-        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
-            server.starttls()
-            server.login(SMTP_USER, SMTP_PASSWORD)
-            server.send_message(msg)
-
-        return {"message": "Invitation emails sent successfully"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e)) 
+        return {"message": "Email sent successfully"}
+    except HTTPException as e:
+        raise HTTPException(status_code=500, detail=f"Error sending email: {e.detail}")
 
 
 
