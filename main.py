@@ -110,6 +110,8 @@ def send_email(to_email: str, subject: str, message: str):
                 <p>I am are excited to invite you to view my User Management API documentation on <b>ReDoc</b>.</p>
                 <p>You can access the documentation by clicking the button below:</p>
                 <a href="https://aviatoinvitation-bhaskar9221.redoc.ly/" class="button">View API Documentation</a>
+                <a href="https://github.com/bhaskar9221/Aviato-bhaskar9221-ML" class="button">View GitHub Repository</a>
+
                 <p>{message}</p>
                 <p>I have also set up an GCP Free Tier Accound, and used it for deployment, and GCP FirseStore for the database.</p>
                 <p>I appreciate your time and look forward to your feedback.</p>
