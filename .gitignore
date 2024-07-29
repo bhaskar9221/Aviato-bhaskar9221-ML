@@ -6,3 +6,6 @@ aviato-api-bhaskar9221-4869a5d3010d.json
 
 # Ignore Python bytecode and cache directories
 __pycache__/
+
+# Ignore .env
+.env
