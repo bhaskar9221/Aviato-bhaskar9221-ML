@@ -111,6 +111,9 @@ def send_email(to_email: str, subject: str, message: str):
                 <p>You can access the documentation by clicking the button below:</p>
                 <a href="https://aviatoinvitation-bhaskar9221.redoc.ly/" class="button">View API Documentation</a>
                 <a href="https://github.com/bhaskar9221/Aviato-bhaskar9221-ML" class="button">View GitHub Repository</a>
+                <a image="https://raw.githubusercontent.com/bhaskar9221/Aviato-bhaskar9221-ML/main/FirestoreDB.png" class="button">View FireStore Database Screenshot</a>
+
+                
 
                 <p>{message}</p>
                 <p>I have also set up an GCP Free Tier Accound, and used it for deployment, and GCP FirseStore for the database.</p>
