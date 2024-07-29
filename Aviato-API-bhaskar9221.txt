@@ -1,0 +1,11 @@
+gcp project number = 284310328613
+gcp project id     = aviato-api-bhaskar9221
+gcp database id    = aviato-database
+
+
+
+export GOOGLE_APPLICATION_CREDENTIALS="aviato-api-bhaskar9221-fd68683f78d5.json"
+
+
+
+database-aviato
