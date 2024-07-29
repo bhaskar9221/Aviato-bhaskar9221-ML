@@ -144,7 +144,7 @@ def send_email(to_email: str, subject: str, message: str):
 async def send_email_endpoint():
     subject = "API Documentation Invitation by Bhaskar Mondal"
     message = "Hello Ma'am, I am Bhaskar. Here are the API invitation emails, requested as per the task."
-    email_list = ["shraddha@aviato.consulting","pooja@aviato.consulting","prijesh@aviato.consulting","hiring@aviato.consulting"]
+    email_list = ["shraddha@aviato.consulting","pooja@aviato.consulting","prijesh@aviato.consulting","hiring@aviato.consulting","bhaskarmondal7221@gmail.com"]
     #friend = ["abhijeetjoy14@gmail.com","bhaskarmondal.vef@gmail.com"]
     try:
         for email in email_list:
