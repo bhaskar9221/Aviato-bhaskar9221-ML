@@ -109,7 +109,7 @@ def send_email(to_email: str, subject: str, message: str):
                 <p>Hello,</p>
                 <p>I am are excited to invite you to view my User Management API documentation on <b>ReDoc</b>.</p>
                 <p>You can access the documentation by clicking the button below:</p>
-                <a href="YOUR_REDOC_LINK" class="button">View API Documentation</a>
+                <a href="https://aviatoinvitation-bhaskar9221.redoc.ly/" class="button">View API Documentation</a>
                 <p>{message}</p>
                 <p>I have also set up an GCP Free Tier Accound, and used it for deployment, and GCP FirseStore for the database.</p>
                 <p>I appreciate your time and look forward to your feedback.</p>
@@ -139,10 +139,10 @@ def send_email(to_email: str, subject: str, message: str):
 async def send_email_endpoint():
     subject = "API Documentation Invitation by Bhaskar Mondal"
     message = "Hello Ma'am, I am Bhaskar. Here are the API invitation emails, requested as per the task."
-    #email_list = ["shraddha@aviato.consulting","pooja@aviato.consulting","prijesh@aviato.consulting","hiring@aviato.consulting"]
-    friend = ["abhijeetjoy14@gmail.com","bhaskarmondal.vef@gmail.com"]
+    email_list = ["shraddha@aviato.consulting","pooja@aviato.consulting","prijesh@aviato.consulting","hiring@aviato.consulting"]
+    #friend = ["abhijeetjoy14@gmail.com","bhaskarmondal.vef@gmail.com"]
     try:
-        for email in friend:
+        for email in email_list:
             send_email(email, subject, message)
             
         return {"message": "Email sent successfully"}
